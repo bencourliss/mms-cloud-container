@@ -60,7 +60,7 @@ $(CSS_EXECUTABLE): $(shell find . -name '*.go') gopathlinks
 	cd $(PKGPATH) && \
 	    export GOPATH=$(TMPGOPATH);
 	    go get; \
-	$(COMPILE_ARGS) go build $(GO_BUILD_LDFLAGS) -o $(CSS_EXECUTABLE) $(GOPATH)/src/github.com/open-horizon/mms-cloud-container/main.go;
+	$(COMPILE_ARGS) go build $(GO_BUILD_LDFLAGS) -o $(CSS_EXECUTABLE)
 
 
 css-docker-image: css-clean
@@ -106,7 +106,8 @@ endif
 PKGS=$(shell cd $(PKGPATH); GOPATH=$(TMPGOPATH) go list ./... | gawk '$$1 !~ /vendor\// {print $$1}')
 
 css-package: css-docker-image
-	if [[ ($(shell tools/image-exists $(FSS_REGISTRY) $(CSS_IMAGE_NAME) $(CSS_IMAGE_VERSION) 2> /dev/null) == "0" || $(IMAGE_OVERRIDE) != "") ]]; then \
+	@echo "Packaging cloud sync service container"
+	if [[ $(shell tools/image-exists $(FSS_REGISTRY) $(CSS_IMAGE_NAME) $(CSS_IMAGE_VERSION) 2> /dev/null) == 0 ]] || [ $(IMAGE_OVERRIDE) != "" ]; then \
 		echo "Pushing CSS Docker image $(CSS_IMAGE)"; \
 		docker push $(CSS_IMAGE); \
 		docker push $(CSS_IMAGE_STG); \
