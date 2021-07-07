@@ -1,0 +1,29 @@
+# This pipeline is to build anax binaries
+
+name: pr-test
+
+on: 
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      HZN_EXCHANGE_USER_AUTH: iamapikey:blah2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      # prepare the environment
+      - name: Set up golang 1.14.1
+        uses: actions/setup-go@v2
+        with:
+           go-version: '1.14.1'
+
+      # build anax binaries
+      - name: Build anax binaries
+        run: cd ${GOPATH}/src/github.com/${GITHUB_REPOSITORY} && make
