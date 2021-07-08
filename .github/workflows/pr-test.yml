@@ -5,11 +5,12 @@ name: pr-test
 on: 
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
 
     steps:
       - name: Checkout
@@ -30,4 +31,3 @@ jobs:
             echo "cloud-sync-service binary does not exist"
             exit 1
           fi
-
